@@ -3,7 +3,7 @@ import shutil
 from datetime import datetime
 
 def sort_files_by_type_and_year(source_folder):
-    # Проверка на существованиеисходной папки
+    # Проверка на существование исходной папки
     if not os.path.exists(source_folder):
         print(f"Папка {source_folder} не существует!")
         return
