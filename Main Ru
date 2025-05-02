@@ -48,7 +48,7 @@ def sort_files_by_type_and_year(source_folder):
 
 if __name__ == "__main__":
     # Указать путь к папке, которую нужно отсортировать
-    folder_to_sort = "Путь, где нужна сортировка"  
+    folder_to_sort = "Путь к папке, где нужна сортировка"  
     
     sort_files_by_type_and_year(folder_to_sort)
     print("Сортировка завершена!")
