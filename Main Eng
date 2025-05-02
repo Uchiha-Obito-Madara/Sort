@@ -1,0 +1,54 @@
+import os
+import shutil
+from datetime import datetime
+
+def sort_files_by_type_and_year(source_folder):
+    # Checking for the existence of the source folder
+    if not os.path.exists(source_folder):
+        print(f"Folder {source_folder} does not exist!")
+        return
+    
+    # Recursive traversal of all folders and subfolders
+    for root, dirs, files in os.walk(source_folder, topdown=False):
+        for filename in files:
+            file_path = os.path.join(root, filename)
+            
+            # Getting the file extension
+            file_ext = os.path.splitext(filename)[1].lower()
+            if not file_ext:  
+                file_ext = "no_extension"
+            else:
+                file_ext = file_ext[1:]  
+            
+            # Getting file creation times
+            creation_time = os.path.getctime(file_path)
+            year = datetime.fromtimestamp(creation_time).year
+            
+            # Creating a path for folders by year and extension
+            year_folder = os.path.join(source_folder, str(year))
+            dest_folder = os.path.join(year_folder, file_ext)
+            
+            # Creating a folder if it does not exist
+            os.makedirs(dest_folder, exist_ok=True)
+            
+            # Moving a file
+            try:
+                shutil.move(file_path, os.path.join(dest_folder, filename))
+                print(f"File {filename} moved to {dest_folder}")
+            except Exception as e:
+                print(f"Error when moving a file {filename}: {e}")
+        
+        # Deleting empty folders after moving files
+        try:
+            if root != source_folder and not os.listdir(root):
+                os.rmdir(root)
+                print(f"An empty folder was deleted: {root}")
+        except Exception as e:
+            print(f"Couldn't delete folder {root}: {e}")
+
+if __name__ == "__main__":
+    # Specify the path to the folder to be sorted
+    folder_to_sort = "The path where sorting is needed"  
+    
+    sort_files_by_type_and_year(folder_to_sort)
+    print("Sorting is complete!")
